@@ -1,0 +1,9 @@
+vn\iotstar\entity\Rating.class
+vn\iotstar\controller\LoginServlet.class
+vn\iotstar\dao\BookDAO.class
+vn\iotstar\controller\HomeServlet.class
+vn\iotstar\entity\User.class
+vn\iotstar\entity\Book.class
+vn\iotstar\util\JPAUtil.class
+vn\iotstar\dao\UserDAO.class
+vn\iotstar\entity\Author.class

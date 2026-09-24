@@ -1,0 +1,320 @@
+
+* {
+	box-sizing: border-box;
+}
+
+body {
+	margin: 0;
+	font-family: 'Segoe UI', Arial, sans-serif;
+	background: #f5f7fb;
+	color: #333;
+}
+
+/* HEADER */
+.header {
+	background: linear-gradient(135deg, #2563eb, #9333ea);
+	padding: 20px 60px;
+	color: white;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	box-shadow: 0 5px 20px rgba(0, 0, 0, .15);
+}
+
+.logo {
+	font-size: 30px;
+	font-weight: bold;
+}
+
+.header a {
+	color: white;
+	text-decoration: none;
+	margin-left: 20px;
+	font-weight: 600;
+}
+
+.header a:hover {
+	text-decoration: underline;
+}
+
+.welcome {
+	margin-left: 20px;
+	font-weight: 600;
+}
+
+/* CONTAINER */
+.container {
+	width: 90%;
+	max-width: 1200px;
+	margin: 40px auto;
+}
+
+.page-title {
+	color: #1e3a8a;
+	margin-bottom: 30px;
+}
+
+/* BOOK LIST */
+.book-grid {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	gap: 25px;
+}
+
+.book-card {
+	background: white;
+	border-radius: 18px;
+	padding: 25px;
+	box-shadow: 0 8px 25px rgba(0, 0, 0, .1);
+	transition: .3s;
+}
+
+.book-card:hover {
+	transform: translateY(-6px);
+	box-shadow: 0 15px 35px rgba(0, 0, 0, .15);
+}
+
+.book-img {
+	width: 150px;
+	height: 200px;
+	object-fit: cover;
+	display: block;
+	margin: auto;
+	border-radius: 12px;
+}
+
+.book-card h2 a {
+	color: #2563eb;
+	text-decoration: none;
+}
+
+.book-card h2 a:hover {
+	color: #9333ea;
+}
+
+.info p {
+	margin: 10px 0;
+}
+
+.review {
+	color: #f59e0b;
+	font-weight: bold;
+}
+
+/* BUTTON */
+.btn {
+	display: inline-block;
+	background: #2563eb;
+	color: white;
+	padding: 10px 20px;
+	border-radius: 10px;
+	text-decoration: none;
+	border: none;
+	cursor: pointer;
+}
+
+.btn:hover {
+	background: #1d4ed8;
+}
+
+.btn-small {
+	background: #16a34a;
+	color: white;
+	padding: 7px 12px;
+	border-radius: 6px;
+	text-decoration: none;
+}
+
+.btn-danger {
+	background: #dc2626;
+	color: white;
+	padding: 7px 12px;
+	border-radius: 6px;
+	text-decoration: none;
+}
+
+/* PAGINATION */
+.pagination {
+	margin-top: 40px;
+	text-align: center;
+}
+
+.pagination a {
+	display: inline-block;
+	background: #2563eb;
+	color: white;
+	padding: 8px 15px;
+	margin: 5px;
+	border-radius: 8px;
+	text-decoration: none;
+}
+
+/* DETAIL */
+.detail-card {
+	background: white;
+	padding: 35px;
+	border-radius: 20px;
+	display: flex;
+	gap: 40px;
+	box-shadow: 0 10px 30px rgba(0, 0, 0, .1);
+}
+
+.detail-card img {
+	width: 300px;
+	height: 400px;
+	object-fit: cover;
+	border-radius: 15px;
+}
+
+.detail-info {
+	flex: 1;
+}
+
+/* REVIEW */
+.review-box {
+	margin-top: 30px;
+	background: white;
+	padding: 30px;
+	border-radius: 20px;
+	box-shadow: 0 10px 30px rgba(0, 0, 0, .1);
+}
+
+.review-item {
+	padding: 15px;
+	margin: 15px 0;
+	border-bottom: 1px solid #ddd;
+}
+
+/* TABLE ADMIN */
+table {
+	width: 100%;
+	background: white;
+	border-collapse: collapse;
+	border-radius: 15px;
+	overflow: hidden;
+	box-shadow: 0 8px 25px rgba(0, 0, 0, .1);
+}
+
+th {
+	background: #2563eb;
+	color: white;
+	padding: 15px;
+}
+
+td {
+	padding: 12px;
+	text-align: center;
+	border-bottom: 1px solid #eee;
+}
+
+tr:hover {
+	background: #eff6ff;
+}
+
+/* FORM */
+.form-card {
+	background: white;
+	padding: 35px;
+	border-radius: 20px;
+	box-shadow: 0 10px 30px rgba(0, 0, 0, .1);
+}
+
+form label {
+	display: block;
+	font-weight: 600;
+	margin-top: 15px;
+}
+
+input, textarea {
+	width: 100%;
+	padding: 12px;
+	margin-top: 8px;
+	border-radius: 10px;
+	border: 1px solid #ccc;
+}
+
+textarea {
+	height: 130px;
+}
+
+button {
+	background: #2563eb;
+	color: white;
+	border: none;
+	padding: 12px 25px;
+	border-radius: 10px;
+	cursor: pointer;
+	margin-top: 20px;
+}
+
+button:hover {
+	background: #1d4ed8;
+}
+
+/* LOGIN */
+.login-page {
+	min-height: 100vh;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background: linear-gradient(135deg, #2563eb, #9333ea);
+}
+
+.login-box {
+	width: 420px;
+	background: white;
+	padding: 40px;
+	border-radius: 20px;
+	box-shadow: 0 15px 40px rgba(0, 0, 0, .25);
+}
+
+.login-logo {
+	text-align: center;
+	font-size: 35px;
+	font-weight: bold;
+	color: #2563eb;
+}
+
+.login-box h2 {
+	text-align: center;
+	margin-bottom: 30px;
+}
+
+.login-box label {
+	display: block;
+	font-weight: 600;
+	margin-top: 15px;
+}
+
+.login-box input {
+	width: 100%;
+	padding: 12px;
+	border-radius: 10px;
+	border: 1px solid #ddd;
+	margin-top: 8px;
+}
+
+.login-box button {
+	width: 100%;
+}
+
+.error {
+	background: #fee2e2;
+	color: #dc2626;
+	padding: 12px;
+	border-radius: 8px;
+	text-align: center;
+}
+
+.register-text {
+	text-align: center;
+}
+
+/* FOOTER */
+.footer {
+	margin-top: 50px;
+	padding: 25px;
+	background: #1e293b;
+	color: white;
+	text-align: center;
+}
