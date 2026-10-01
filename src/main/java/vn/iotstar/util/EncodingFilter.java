@@ -1,6 +1,10 @@
 package vn.iotstar.util;
 
-import jakarta.servlet.*;
+import jakarta.servlet.Filter;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.ServletRequest;
+import jakarta.servlet.ServletResponse;
 import jakarta.servlet.annotation.WebFilter;
 
 import java.io.IOException;
@@ -16,9 +20,7 @@ public class EncodingFilter implements Filter {
             throws IOException, ServletException {
 
         request.setCharacterEncoding("UTF-8");
-
         response.setCharacterEncoding("UTF-8");
-        response.setContentType("text/html; charset=UTF-8");
 
         chain.doFilter(request, response);
     }

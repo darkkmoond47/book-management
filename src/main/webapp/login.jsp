@@ -92,7 +92,9 @@
 			<p class="register-text">
 
 
-				Chưa có tài khoản? <a href="#"> Đăng ký </a>
+				Chưa có tài khoản? <a href="${pageContext.request.contextPath}/register">
+    Đăng ký
+</a>
 
 
 			</p>

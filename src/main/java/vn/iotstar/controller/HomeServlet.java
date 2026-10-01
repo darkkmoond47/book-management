@@ -6,37 +6,73 @@ import jakarta.servlet.http.*;
 
 import java.io.IOException;
 
-import vn.iotstar.dao.BookDAO;
+import vn.iotstar.entity.User;
+import vn.iotstar.service.BookService;
 
 @WebServlet("/home")
 public class HomeServlet extends HttpServlet {
 
-	private BookDAO bookDAO = new BookDAO();
+    private BookService bookService = new BookService();
 
-	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+    @Override
+    protected void doGet(
+            HttpServletRequest request,
+            HttpServletResponse response)
+            throws ServletException, IOException {
 
-		int page = 1;
+        int page = 1;
 
-		if (request.getParameter("page") != null) {
+        String pageParam = request.getParameter("page");
 
-			page = Integer.parseInt(request.getParameter("page"));
+        if (pageParam != null && !pageParam.isEmpty()) {
 
-		}
+            try {
+                page = Integer.parseInt(pageParam);
 
-		request.setAttribute("books", bookDAO.findAll(page));
+                if (page < 1) {
+                    page = 1;
+                }
 
-		long total = bookDAO.count();
+            } catch (NumberFormatException e) {
+                page = 1;
+            }
+        }
 
-		request.setAttribute("totalPage", (int) Math.ceil(total / 6.0));
+        // Lấy sách theo trang, 6 sách/trang
+        request.setAttribute(
+                "books",
+                bookService.findAll(page)
+        );
 
-		request.setAttribute("currentPage", page);
+        // Tổng số sách
+        long total = bookService.count();
 
-		HttpSession session = request.getSession();
+        // Tổng số trang
+        int totalPage = (int) Math.ceil(total / 6.0);
 
-		request.setAttribute("account", session.getAttribute("account"));
-		request.getRequestDispatcher("/WEB-INF/views/home.jsp").forward(request, response);
+        request.setAttribute(
+                "totalPage",
+                totalPage
+        );
 
-	}
+        request.setAttribute(
+                "currentPage",
+                page
+        );
 
+        // Lấy tài khoản từ Session
+        HttpSession session = request.getSession();
+
+        User user = (User) session.getAttribute("account");
+
+        request.setAttribute(
+                "account",
+                user
+        );
+
+        // Chuyển sang trang Home
+        request.getRequestDispatcher(
+                "/WEB-INF/views/home.jsp"
+        ).forward(request, response);
+    }
 }

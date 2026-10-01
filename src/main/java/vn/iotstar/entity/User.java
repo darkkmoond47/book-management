@@ -13,29 +13,22 @@ import java.util.List;
 @AllArgsConstructor
 public class User {
 
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-
     @Column(nullable = false, unique = true)
     private String email;
 
-
     private String fullname;
-
 
     private String phone;
 
-
     private String passwd;
 
-
+    @Column(name = "admin")
     private boolean admin;
-
 
     @OneToMany(mappedBy = "user")
     private List<Rating> ratings;
-
 }

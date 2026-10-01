@@ -1,6 +1,5 @@
 package vn.iotstar.dao;
 
-
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
 
@@ -9,207 +8,134 @@ import vn.iotstar.util.JPAUtil;
 
 import java.util.List;
 
-
-
 public class BookDAO {
 
+    // Lấy sách cho trang Home - 6 sách/trang
+    public List<Book> findAll(int page) {
 
-
-    public List<Book> findAll(int page){
-
-
-        EntityManager em =
-                JPAUtil.getEntityManager();
-
+        EntityManager em = JPAUtil.getEntityManager();
 
         try {
 
             return em.createQuery(
                     "SELECT b FROM Book b",
-                    Book.class)
-
-                    .setFirstResult((page - 1) * 6)
-                    .setMaxResults(6)
-                    .getResultList();
-
+                    Book.class
+            )
+            .setFirstResult((page - 1) * 6)
+            .setMaxResults(6)
+            .getResultList();
 
         } finally {
-
             em.close();
-
         }
-
     }
 
+    // Lấy sách cho Admin - 6 sách/trang
+    public List<Book> findAllAdmin(int page) {
 
-
-
-    public List<Book> findAllAdmin(){
-
-
-        EntityManager em =
-                JPAUtil.getEntityManager();
-
+        EntityManager em = JPAUtil.getEntityManager();
 
         try {
 
             return em.createQuery(
                     "SELECT b FROM Book b",
-                    Book.class)
-
-                    .getResultList();
-
+                    Book.class
+            )
+            .setFirstResult((page - 1) * 6)
+            .setMaxResults(6)
+            .getResultList();
 
         } finally {
-
             em.close();
-
         }
-
     }
 
+    // Đếm tổng số sách
+    public long count() {
 
-
-
-    public long count(){
-
-
-        EntityManager em =
-                JPAUtil.getEntityManager();
-
+        EntityManager em = JPAUtil.getEntityManager();
 
         try {
-
 
             return em.createQuery(
                     "SELECT COUNT(b) FROM Book b",
-                    Long.class)
-
-                    .getSingleResult();
-
+                    Long.class
+            ).getSingleResult();
 
         } finally {
-
             em.close();
-
         }
-
     }
 
+    public Book findById(int id) {
 
-
-
-
-    public Book findById(int id){
-
-
-        EntityManager em =
-                JPAUtil.getEntityManager();
-
+        EntityManager em = JPAUtil.getEntityManager();
 
         try {
-
-
-            return em.find(Book.class,id);
-
+            return em.find(Book.class, id);
 
         } finally {
-
-
             em.close();
-
         }
-
     }
 
+    public void save(Book book) {
 
-
-
-
-    public void save(Book book){
-
-
-        EntityManager em =
-                JPAUtil.getEntityManager();
-
-
-        EntityTransaction tr =
-                em.getTransaction();
-
+        EntityManager em = JPAUtil.getEntityManager();
+        EntityTransaction tr = em.getTransaction();
 
         try {
-
 
             tr.begin();
 
-
-            if(book.getBookid()==null){
-
+            if (book.getBookid() == null) {
                 em.persist(book);
-
-            }else{
-
+            } else {
                 em.merge(book);
-
             }
-
 
             tr.commit();
 
+        } catch (Exception e) {
 
-        }finally{
+            if (tr.isActive()) {
+                tr.rollback();
+            }
 
+            e.printStackTrace();
 
+        } finally {
             em.close();
-
         }
-
     }
 
+    public void delete(int id) {
 
-
-
-
-    public void delete(int id){
-
-
-        EntityManager em =
-                JPAUtil.getEntityManager();
-
-
-        EntityTransaction tr =
-                em.getTransaction();
-
+        EntityManager em = JPAUtil.getEntityManager();
+        EntityTransaction tr = em.getTransaction();
 
         try {
 
-
             tr.begin();
 
+            Book book = em.find(Book.class, id);
 
-            Book book =
-                    em.find(Book.class,id);
-
-
-            if(book != null){
-
+            if (book != null) {
                 em.remove(book);
-
             }
-
 
             tr.commit();
 
+        } catch (Exception e) {
 
-        }finally{
+            if (tr.isActive()) {
+                tr.rollback();
+            }
 
+            e.printStackTrace();
 
+        } finally {
             em.close();
-
         }
-
-
     }
-
-
 }

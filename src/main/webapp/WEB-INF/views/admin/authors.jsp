@@ -100,6 +100,16 @@
 
 
 		</table>
+		<div class="pagination">
+
+			<c:forEach begin="1" end="${totalPage}" var="i">
+
+				<a href="${pageContext.request.contextPath}/admin/authors?page=${i}"
+					class="${i == currentPage ? 'active' : ''}"> ${i} </a>
+
+			</c:forEach>
+
+		</div>
 
 
 

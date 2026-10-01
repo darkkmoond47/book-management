@@ -62,11 +62,14 @@ body {
 }
 
 .book-card {
-	background: white;
-	border-radius: 18px;
-	padding: 25px;
-	box-shadow: 0 8px 25px rgba(0, 0, 0, .1);
-	transition: .3s;
+    background: white;
+    border-radius: 18px;
+    padding: 25px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, .1);
+    transition: .3s;
+
+    display: flex;
+    flex-direction: column;
 }
 
 .book-card:hover {
@@ -92,8 +95,12 @@ body {
 	color: #9333ea;
 }
 
+.info {
+    flex: 1;
+}
+
 .info p {
-	margin: 10px 0;
+    margin: 10px 0;
 }
 
 .review {
@@ -317,4 +324,97 @@ button:hover {
 	background: #1e293b;
 	color: white;
 	text-align: center;
+}
+/* SITEMESH USER LAYOUT */
+.sitemesh-user-layout {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.sitemesh-user-content {
+    flex: 1;
+}
+/* =========================
+   CART
+   ========================= */
+
+.cart-message {
+    background: #dcfce7;
+    color: #166534;
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    text-align: center;
+    font-weight: 600;
+}
+
+.empty-cart {
+    background: white;
+    padding: 50px;
+    border-radius: 20px;
+    text-align: center;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+.cart-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+.cart-table th {
+    background: #2563eb;
+    color: white;
+    padding: 15px;
+}
+
+.cart-table td {
+    padding: 15px;
+    text-align: center;
+    border-bottom: 1px solid #eee;
+}
+
+.cart-book {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    text-align: left;
+}
+
+.cart-img {
+    width: 70px;
+    height: 90px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.quantity-input {
+    width: 80px;
+    padding: 8px;
+    text-align: center;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+}
+
+.cart-actions {
+    margin-top: 25px;
+    display: flex;
+    gap: 15px;
+}
+
+.cart-total {
+    margin-top: 30px;
+    background: white;
+    padding: 25px;
+    border-radius: 15px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    text-align: right;
+}
+
+.cart-total h2 {
+    margin-bottom: 20px;
 }

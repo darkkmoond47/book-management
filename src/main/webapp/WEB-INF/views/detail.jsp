@@ -1,202 +1,230 @@
-<%@ page contentType="text/html;charset=UTF-8"%>
+<%@ page contentType="text/html;charset=UTF-8" %>
 
-<%@ taglib prefix="c" uri="jakarta.tags.core"%>
-
-
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
 
 <!DOCTYPE html>
-
 <html lang="vi">
-
 
 <head>
 
-<meta charset="UTF-8">
+    <meta charset="UTF-8">
 
-<title>${book.title}</title>
+    <title>${book.title}</title>
 
-
-<link rel="stylesheet"
-	href="${pageContext.request.contextPath}/assets/css/style.css">
-
+    <link rel="stylesheet"
+          href="${pageContext.request.contextPath}/assets/css/style.css">
 
 </head>
 
-
-
-
 <body>
 
+<header class="header">
 
+    <div class="logo">
+        📚 Book Store
+    </div>
 
-	<header class="header">
+    <a href="${pageContext.request.contextPath}/home">
+        ← Trang chủ
+    </a>
 
+</header>
 
-		<div class="logo">📚 Book Store</div>
 
+<div class="container">
 
-		<a href="${pageContext.request.contextPath}/home"> ← Trang chủ </a>
+    <!-- THÔNG TIN SÁCH -->
 
+    <div class="detail-card">
 
-	</header>
+        <div class="detail-image">
 
+            <img
+                src="${pageContext.request.contextPath}/${book.cover_image}"
+                alt="${book.title}"
+            >
 
+        </div>
 
 
+        <div class="detail-info">
 
+            <p>
+                <strong>Tiêu đề:</strong>
+                ${book.title}
+            </p>
 
-	<div class="container">
+            <p>
+                <strong>Mã ISBN:</strong>
+                ${book.isbn}
+            </p>
 
+            <p>
 
+                <strong>Tác giả:</strong>
 
-		<div class="detail-card">
+                <c:forEach
+                    items="${book.authors}"
+                    var="a">
 
+                    ${a.author_name}
 
+                </c:forEach>
 
-			<div class="detail-image">
+            </p>
 
+            <p>
+                <strong>Publisher:</strong>
+                ${book.publisher}
+            </p>
 
-				<img src="${pageContext.request.contextPath}/${book.cover_image}">
+            <p>
+                <strong>Publisher_date:</strong>
+                ${book.publish_date}
+            </p>
 
+            <p>
+                <strong>Quantity:</strong>
+                ${book.quantity}
+            </p>
+            <form
+    action="${pageContext.request.contextPath}/cart"
+    method="post">
 
-			</div>
+    <input
+        type="hidden"
+        name="action"
+        value="add">
 
+    <input
+        type="hidden"
+        name="bookid"
+        value="${book.bookid}">
 
+    <label>
+        Số lượng:
+    </label>
 
+    <input
+        type="number"
+        name="quantity"
+        value="1"
+        min="1"
+        max="${book.quantity}"
+        style="width: 100px;">
 
+    <button type="submit">
+        🛒 Thêm vào giỏ
+    </button>
 
-			<div class="detail-info">
+</form>
 
+        </div>
 
-				<h1>${book.title}</h1>
+    </div>
 
 
+    <!-- REVIEWS -->
 
-				<p>
+    <section class="review-box">
 
-					<strong>ISBN:</strong> ${book.isbn}
+        <h2>
+            Reviews (${book.ratings.size()})
+        </h2>
 
-				</p>
 
+        <c:choose>
 
+            <c:when test="${empty book.ratings}">
 
-				<p>
+                <p>
+                    Chưa có đánh giá nào.
+                </p>
 
-					<strong>Tác giả:</strong>
+            </c:when>
 
-					<c:forEach items="${book.authors}" var="a">
 
-${a.author_name}
+            <c:otherwise>
 
-</c:forEach>
+                <c:forEach
+                    items="${book.ratings}"
+                    var="r">
 
-				</p>
+                    <div class="review-item">
 
+                        <strong>
+                            ${r.user.fullname}
+                        </strong>
 
+                        <p>
+                            ${r.review_text}
+                        </p>
 
-				<p>
+                    </div>
 
-					<strong>Nhà xuất bản:</strong> ${book.publisher}
+                </c:forEach>
 
-				</p>
+            </c:otherwise>
 
+        </c:choose>
 
 
+        <!-- FORM THÊM REVIEW -->
 
-				<p>
+        <h3>
+            Thêm review
+        </h3>
 
-					<strong>Ngày xuất bản:</strong> ${book.publish_date}
 
-				</p>
+        <c:choose>
 
+            <c:when test="${not empty sessionScope.account}">
 
+                <form
+                    action="${pageContext.request.contextPath}/review"
+                    method="post">
 
+                    <input
+                        type="hidden"
+                        name="bookid"
+                        value="${book.bookid}"
+                    >
 
-				<p>
+                    <textarea
+                        name="review_text"
+                        placeholder="Nhập đánh giá..."
+                        required
+                    ></textarea>
 
-					<strong>Số lượng:</strong> ${book.quantity}
+                    <br>
 
-				</p>
+                    <button type="submit">
+                        Submit
+                    </button>
 
+                </form>
 
+            </c:when>
 
 
-				<p>
+            <c:otherwise>
 
-					<strong>Giá:</strong> ${book.price}
+                <p>
+                    Vui lòng
+                    <a href="${pageContext.request.contextPath}/login">
+                        đăng nhập
+                    </a>
+                    để viết review.
+                </p>
 
-				</p>
+            </c:otherwise>
 
+        </c:choose>
 
-			</div>
+    </section>
 
-
-		</div>
-
-
-
-
-
-
-		<section class="review-box">
-
-
-			<h2>Đánh giá</h2>
-
-
-
-			<c:forEach items="${book.ratings}" var="r">
-
-
-				<div class="review-item">
-
-
-					<h4>${r.user.fullname}</h4>
-
-
-					<p>${r.review_text}</p>
-
-
-				</div>
-
-
-
-			</c:forEach>
-
-
-
-
-
-			<h3>Viết đánh giá</h3>
-
-
-
-			<form>
-
-
-				<textarea placeholder="Nhập đánh giá..."></textarea>
-
-
-				<br>
-
-
-				<button>Gửi đánh giá</button>
-
-
-			</form>
-
-
-
-		</section>
-
-
-
-
-	</div>
-
-
+</div>
 
 </body>
-
 
 </html>

@@ -9,10 +9,8 @@ import java.io.IOException;
 import vn.iotstar.dao.UserDAO;
 import vn.iotstar.entity.User;
 
-
 @WebServlet("/login")
 public class LoginServlet extends HttpServlet {
-
 
     private UserDAO userDAO = new UserDAO();
 
@@ -22,63 +20,57 @@ public class LoginServlet extends HttpServlet {
             HttpServletResponse response)
             throws ServletException, IOException {
 
-
         request.getRequestDispatcher(
-                "/WEB-INF/views/login.jsp")
-                .forward(request, response);
-
+                "/login.jsp"
+        ).forward(request, response);
     }
+
     @Override
     protected void doPost(
             HttpServletRequest request,
             HttpServletResponse response)
             throws ServletException, IOException {
 
-
         String email = request.getParameter("email");
-
         String password = request.getParameter("password");
-
 
         User user = userDAO.login(email, password);
 
-
-
-        if(user != null){
-
+        if (user != null) {
 
             HttpSession session = request.getSession();
-
 
             session.setAttribute(
                     "account",
                     user
             );
 
-
             System.out.println(
-                    "LOGIN SUCCESS: "
-                    + user.getFullname()
+                    "LOGIN SUCCESS: " + user.getFullname()
             );
 
+            System.out.println(
+                    "EMAIL: " + user.getEmail()
+            );
 
-            response.sendRedirect("home");
+            System.out.println(
+                    "ADMIN: " + user.isAdmin()
+            );
 
+            response.sendRedirect(
+                    request.getContextPath() + "/home"
+            );
 
-        }else{
-
+        } else {
 
             System.out.println(
                     "LOGIN FAILED"
             );
 
-
             response.sendRedirect(
-                    "login.jsp?error=true"
+                    request.getContextPath()
+                    + "/login.jsp?error=true"
             );
-
         }
-
     }
-
 }

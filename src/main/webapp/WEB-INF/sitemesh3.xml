@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<sitemesh>
+
+    <!-- Decorator cho khu vực Admin -->
+    <mapping
+        path="/admin/*"
+        decorator="admin.jsp" />
+
+    <!-- Decorator cho User -->
+    <mapping
+        path="/*"
+        decorator="user.jsp" />
+
+    <!-- Không decorate CSS, JS, hình ảnh -->
+    <mapping
+        path="/assets/*"
+        exclude="true" />
+
+</sitemesh>

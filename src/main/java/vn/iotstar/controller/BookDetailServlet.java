@@ -1,25 +1,18 @@
 package vn.iotstar.controller;
 
-
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
 
 import java.io.IOException;
 
-
-import vn.iotstar.dao.BookDAO;
 import vn.iotstar.entity.Book;
-
-
+import vn.iotstar.service.BookService;
 
 @WebServlet("/detail")
 public class BookDetailServlet extends HttpServlet {
 
-
-    private BookDAO bookDAO = new BookDAO();
-
-
+    private BookService bookService = new BookService();
 
     @Override
     protected void doGet(
@@ -27,28 +20,46 @@ public class BookDetailServlet extends HttpServlet {
             HttpServletResponse response)
             throws ServletException, IOException {
 
+        String idParam = request.getParameter("id");
 
-        int id = Integer.parseInt(
-                request.getParameter("id")
-        );
+        if (idParam == null || idParam.isEmpty()) {
 
+            response.sendRedirect(
+                    request.getContextPath() + "/home"
+            );
 
-        Book book =
-                bookDAO.findById(id);
+            return;
+        }
 
+        try {
 
+            int id = Integer.parseInt(idParam);
 
-        request.setAttribute(
-                "book",
-                book
-        );
+            Book book = bookService.findById(id);
 
+            if (book == null) {
 
-        request.getRequestDispatcher(
-                "/WEB-INF/views/detail.jsp"
-        ).forward(request, response);
+                response.sendRedirect(
+                        request.getContextPath() + "/home"
+                );
 
+                return;
+            }
 
+            request.setAttribute(
+                    "book",
+                    book
+            );
+
+            request.getRequestDispatcher(
+                    "/WEB-INF/views/detail.jsp"
+            ).forward(request, response);
+
+        } catch (NumberFormatException e) {
+
+            response.sendRedirect(
+                    request.getContextPath() + "/home"
+            );
+        }
     }
-
 }
