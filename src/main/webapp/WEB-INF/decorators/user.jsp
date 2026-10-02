@@ -17,22 +17,45 @@
 
     <sitemesh:write property="head"/>
 
+    <style>
+
+        .sitemesh-user-layout {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sitemesh-user-content {
+            flex: 1;
+        }
+
+        .footer {
+            margin-top: 0;
+        }
+
+    </style>
+
 </head>
 
 <body>
 
 <%
-    User user = (User) session.getAttribute("account");
+    User user =
+            (User) session.getAttribute("account");
 %>
 
 <div class="sitemesh-user-layout">
 
-    <!-- HEADER -->
+    <!-- =========================
+         HEADER
+         ========================= -->
+
     <div class="header">
 
         <div class="logo">
             📚 Book Store
         </div>
+
 
         <div>
 
@@ -43,12 +66,14 @@
             <a href="${pageContext.request.contextPath}/home">
                 Sản phẩm
             </a>
-            <a href="${pageContext.request.contextPath}/cart">
-    🛒 Giỏ hàng
-</a>
 
-            <!-- CHỈ ADMIN MỚI HIỆN -->
-            <% if (user != null && user.isAdmin()) { %>
+            <a href="${pageContext.request.contextPath}/cart">
+                🛒 Giỏ hàng
+            </a>
+
+            <%
+                if (user != null && user.isAdmin()) {
+            %>
 
                 <a href="${pageContext.request.contextPath}/admin/books">
                     Quản trị sách
@@ -58,14 +83,35 @@
                     Quản trị tác giả
                 </a>
 
-            <% } %>
+            <%
+                }
+            %>
+
+
+            <!-- LỊCH SỬ ĐẶT HÀNG -->
+
+            <%
+                if (user != null) {
+            %>
+
+                <a href="${pageContext.request.contextPath}/order-history">
+                    📋 Lịch sử đặt hàng
+                </a>
+
+            <%
+                }
+            %>
 
 
             <!-- ĐÃ ĐĂNG NHẬP -->
-            <% if (user != null) { %>
+
+            <%
+                if (user != null) {
+            %>
 
                 <span class="welcome">
-                    Xin chào <%= user.getFullname() %>
+                    Xin chào
+                    <%= user.getFullname() %>
                 </span>
 
                 <a href="${pageContext.request.contextPath}/logout">
@@ -74,20 +120,28 @@
 
 
             <!-- CHƯA ĐĂNG NHẬP -->
-            <% } else { %>
+
+            <%
+                } else {
+            %>
 
                 <a href="${pageContext.request.contextPath}/login">
                     Đăng nhập
                 </a>
 
-            <% } %>
+            <%
+                }
+            %>
 
         </div>
 
     </div>
 
 
-    <!-- CONTENT -->
+    <!-- =========================
+         CONTENT
+         ========================= -->
+
     <main class="sitemesh-user-content">
 
         <sitemesh:write property="body"/>
@@ -95,7 +149,10 @@
     </main>
 
 
-    <!-- FOOTER -->
+    <!-- =========================
+         FOOTER
+         ========================= -->
+
     <div class="footer">
 
         <p>

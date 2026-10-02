@@ -21,25 +21,36 @@ public class Order {
     private Integer id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "userid", nullable = false)
+    @JoinColumn(
+            name = "userid",
+            nullable = false
+    )
     private User user;
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(nullable = false)
     private Date orderDate;
 
-    @Column(precision = 18, scale = 2, nullable = false)
+    @Column(
+            precision = 18,
+            scale = 2,
+            nullable = false
+    )
     private BigDecimal totalAmount;
 
-    @Column(nullable = false)
+    @Column(name = "status", nullable = false, columnDefinition = "NVARCHAR(50)")
     private String status;
 
+    @Column(nullable = false)
+    private String paymentMethod;
+
     @OneToMany(
-        mappedBy = "order",
-        cascade = CascadeType.ALL,
-        orphanRemoval = true
+            mappedBy = "order",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
     )
-    private List<OrderDetail> details = new ArrayList<>();
+    private List<OrderDetail> details =
+            new ArrayList<>();
 
     public void addDetail(OrderDetail detail) {
 

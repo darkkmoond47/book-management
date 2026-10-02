@@ -17,6 +17,9 @@ import vn.iotstar.util.JPAUtil;
 
 public class OrderDAO {
 
+    // =========================================================
+    // YC2 - TẠO ĐƠN HÀNG COD
+    // =========================================================
     public Integer createOrder(
             User sessionUser,
             List<CartItem> cart) {
@@ -50,11 +53,14 @@ public class OrderDAO {
 
             order.setOrderDate(new Date());
 
-            order.setStatus("Đã thanh toán");
+            // Trạng thái ban đầu của đơn COD
+            order.setStatus("Đơn hàng mới");
+
+            // Phương thức thanh toán
+            order.setPaymentMethod("COD");
 
             BigDecimal total =
                     BigDecimal.ZERO;
-
 
             // Duyệt toàn bộ giỏ hàng
             for (CartItem item : cart) {
@@ -78,17 +84,15 @@ public class OrderDAO {
                     );
                 }
 
-
                 int quantity =
                         item.getQuantity();
 
                 int stock =
                         book.getQuantity() == null
-                        ? 0
-                        : book.getQuantity();
+                                ? 0
+                                : book.getQuantity();
 
-
-                // Kiểm tra tồn kho
+                // Kiểm tra số lượng
                 if (quantity <= 0) {
 
                     throw new RuntimeException(
@@ -96,6 +100,7 @@ public class OrderDAO {
                     );
                 }
 
+                // Kiểm tra tồn kho
                 if (quantity > stock) {
 
                     throw new RuntimeException(
@@ -107,7 +112,6 @@ public class OrderDAO {
                     );
                 }
 
-
                 // Giá hiện tại trong database
                 BigDecimal price =
                         book.getPrice();
@@ -118,14 +122,12 @@ public class OrderDAO {
                             BigDecimal.ZERO;
                 }
 
-
                 BigDecimal subtotal =
                         price.multiply(
                                 BigDecimal.valueOf(
                                         quantity
                                 )
                         );
-
 
                 OrderDetail detail =
                         new OrderDetail();
@@ -138,26 +140,20 @@ public class OrderDAO {
 
                 detail.setSubtotal(subtotal);
 
-
                 order.addDetail(detail);
-
 
                 total =
                         total.add(subtotal);
-
 
                 // Trừ tồn kho
                 book.setQuantity(
                         stock - quantity
                 );
-
             }
-
 
             order.setTotalAmount(total);
 
-
-            // Lưu Order và toàn bộ OrderDetail
+            // Lưu Order + OrderDetail
             em.persist(order);
 
             transaction.commit();
@@ -171,6 +167,72 @@ public class OrderDAO {
             }
 
             throw e;
+
+        } finally {
+
+            if (em != null &&
+                    em.isOpen()) {
+
+                em.close();
+            }
+        }
+    }
+
+
+    // =========================================================
+    // YC3 - LẤY LỊCH SỬ ĐƠN HÀNG
+    // =========================================================
+    public List<Order> findByUserAndStatus(
+            Integer userId,
+            String status) {
+
+        EntityManager em =
+                JPAUtil.getEntityManager();
+
+        try {
+
+            String jpql =
+                    "SELECT DISTINCT o " +
+                    "FROM Order o " +
+                    "LEFT JOIN FETCH o.details d " +
+                    "LEFT JOIN FETCH d.book " +
+                    "WHERE o.user.id = :userId ";
+
+            // Nếu không chọn "Tất cả"
+            // thì lọc theo trạng thái
+            if (status != null &&
+                    !status.isEmpty() &&
+                    !status.equals("ALL")) {
+
+                jpql +=
+                        "AND o.status = :status ";
+            }
+
+            jpql +=
+                    "ORDER BY o.orderDate DESC";
+
+            var query =
+                    em.createQuery(
+                            jpql,
+                            Order.class
+                    );
+
+            query.setParameter(
+                    "userId",
+                    userId
+            );
+
+            if (status != null &&
+                    !status.isEmpty() &&
+                    !status.equals("ALL")) {
+
+                query.setParameter(
+                        "status",
+                        status
+                );
+            }
+
+            return query.getResultList();
 
         } finally {
 
